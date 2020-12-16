@@ -86,8 +86,18 @@ h3 {
   background-color: lightseagreen;
   cursor: pointer;
 }
+.add-button {
+  width: 100px;
+  margin: 0 auto;
+  text-align: center;
+  border: 1px solid grey;
+  padding: 5px 10px;
+  background-color: lightseagreen;
+  cursor: pointer;
+}
 .save-button:hover,
-.edit-button:hover {
+.edit-button:hover,
+.add-button:hover {
   background-color: green;
   color: white;
 }

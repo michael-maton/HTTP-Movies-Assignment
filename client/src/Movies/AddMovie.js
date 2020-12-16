@@ -1,53 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 const initialItem = {
   title: "",
   director: "",
   metascore: "",
-  stars: [],
+  stars: [""],
 };
-
-const UpdateForm = (props) => {
+export default function AddMovie(props) {
   const { push } = useHistory();
   const [item, setItem] = useState(initialItem);
-  const { id } = useParams();
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/movies/${id}`)
-      .then((res) => {
-        console.log("", res.data);
-        setItem(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
+  const changeHandler = (e) => {
+      setItem({
+        ...item,
+        [e.target.name]: e.target.value,
       });
-  }, []);
-
-  const changeHandler = (ev) => {
-    setItem({
-      ...item,
-      [ev.target.name]: ev.target.value,
-    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .put(`http://localhost:5000/api/movies/${id}`, item)
+      .post(`http://localhost:5000/api/movies/`, item)
       .then((res) => {
         console.log(res.data);
-        axios
-          .get("http://localhost:5000/api/movies")
-          .then((res) => {
-            props.setMovieList(res.data);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-        push(`/movies/${id}`);
+        props.setMovieList(res.data);
+        push(`/`);
       })
       .catch((err) => {
         console.log(err);
@@ -57,7 +36,7 @@ const UpdateForm = (props) => {
 
   return (
     <div>
-      <h2>Update Movie</h2>
+      <h2>Add Movie</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="string"
@@ -91,14 +70,12 @@ const UpdateForm = (props) => {
           name="stars"
           onChange={changeHandler}
           placeholder="Starring Actors"
-          value={item.stars}
+          value={"Brad Pitt"}
         />
         <div className="baseline" />
 
-        <button className="add-button">Update</button>
+        <button className="add-button">Add</button>
       </form>
     </div>
   );
-};
-
-export default UpdateForm;
+}

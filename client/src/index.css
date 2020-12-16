@@ -21,7 +21,10 @@ body {
   font-size: 0.8rem;
   cursor: pointer;
 }
-.movie-metascore, h2, .movie-star, h3{
+.movie-metascore,
+h2,
+.movie-star,
+h3 {
   cursor: pointer;
 }
 .saved-list {
@@ -84,13 +87,11 @@ body {
   cursor: pointer;
 }
 .save-button:hover,
-.edit-button:hover
- {
+.edit-button:hover {
   background-color: green;
   color: white;
 }
-.delete-button:hover
- {
+.delete-button:hover {
   background-color: rgb(185, 45, 73);
   color: white;
 }
@@ -104,12 +105,6 @@ body {
   color: red;
   text-align: center;
 }
-
-
-
-
-
-
 
 form {
   margin: 0 auto;
@@ -147,7 +142,7 @@ input {
   /* vertical-align: middle;*/
 }
 .baseline:before {
-  content: '';
+  content: "";
   position: absolute;
   z-index: -1;
   left: 0;

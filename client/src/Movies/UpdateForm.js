@@ -11,49 +11,50 @@ const initialItem = {
 };
 
 const UpdateForm = (props) => {
-    const { push } = useHistory();
-    const [item, setItem] = useState(initialItem);
-    const { id } = useParams();
+  const { push } = useHistory();
+  const [item, setItem] = useState(initialItem);
+  const { id } = useParams();
 
-    useEffect(()=>{
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/api/movies/${id}`)
+      .then((res) => {
+        console.log("", res.data);
+        setItem(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const changeHandler = (ev) => {
+    setItem({
+      ...item,
+      [ev.target.name]: ev.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .put(`http://localhost:5000/api/movies/${id}`, item)
+      .then((res) => {
+        console.log(res.data);
         axios
-          .get(`http://localhost:5000/api/movies/${id}`)
-          .then(res=>{
-              console.log("", res.data)
-            setItem(res.data);
+          .get("http://localhost:5000/api/movies")
+          .then((res) => {
+            props.setMovieList(res.data);
           })
-          .catch(err=>{
+          .catch((err) => {
             console.log(err);
-          })
-      }, []);
-
-      const changeHandler = ev => {
-        setItem({
-          ...item,
-          [ev.target.name]: ev.target.value
-        });
-      };
-
-      const handleSubmit = e => {
-        e.preventDefault();
-        axios
-          .put(`http://localhost:5000/api/movies/${id}`, item)
-          .then(res=>{
-              console.log(res.data)
-              axios.get("http://localhost:5000/api/movies")
-                .then(res => {
-                    props.setMovieList(res.data);
-                })
-                .catch(err => {console.log(err)});
-            push(`/movies/${id}`);
-          })
-          .catch(err=>{
-            console.log(err);
-          })
-        // make a PUT request to edit the item
-      };
-
-
+          });
+        push(`/movies/${id}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // make a PUT request to edit the item
+  };
 
   return (
     <div>
@@ -99,6 +100,6 @@ const UpdateForm = (props) => {
       </form>
     </div>
   );
-}
+};
 
 export default UpdateForm;

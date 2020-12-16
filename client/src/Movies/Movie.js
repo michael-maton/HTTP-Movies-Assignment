@@ -21,12 +21,26 @@ function Movie(props) {
 
   const editMovie = () => {
     console.log(params.id);
-  push(`/update-movie/${params.id}`)
-
+    push(`/update-movie/${params.id}`);
   };
 
   const deleteMovie = () => {
-    console.log("delete");
+    axios
+      .delete(`http://localhost:5000/api/movies/${params.id}`)
+      .then((res) => {
+        axios
+          .get("http://localhost:5000/api/movies")
+          .then((res) => {
+            props.setMovieList(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        push("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
